@@ -61,7 +61,7 @@ def reverse_complement(dna):
 #@param rec The number of organisms that are homozygous recessive
 #returns the probability for an offspring of two randomly selected organisms to possess a dominant allele
 def mendels_law(hom, het, rec):
-    totalal = hom + het + rec
+    total = hom + het + rec
 
     #array of discrete probabilities for every couple
     couples = [
@@ -85,7 +85,7 @@ def fibonacci_rabbits(n, k):
 
 #@param dna_list List of DNA strings
 #returns index of DNA string with highest GC-content and its GC-content percentage as a tuple
-def gc_content(dna_list):
+def GC_content(dna_list):
     GC_count = []
     total = []
     index = 0
@@ -119,6 +119,8 @@ def rna2codon(rna):
     for i in range(0, int(len(rna) / 3)):
         try:
             amino += genetic_code[(rna[3 * i:3 * i + 3])]
+            if(genetic_code[(rna[3 * i: 3 * i + 3])] == '*'):
+                break
         except KeyError:
             continue
 
