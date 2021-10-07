@@ -108,7 +108,7 @@ def GC_content(dna_list):
             max_GC = GC_count[i]
             index = i
 
-    return (index, GC_count[index] / total[index] * 100)
+    return (index, round(GC_count[index] / total[index] * 100, 6))
 
 #@param rna A string representing an RNA sequence
 #returns corresponding amino acid string
