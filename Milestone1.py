@@ -86,29 +86,25 @@ def fibonacci_rabbits(n, k):
 #@param dna_list List of DNA strings
 #returns index of DNA string with highest GC-content and its GC-content percentage as a tuple
 def GC_content(dna_list):
-    GC_count = []
-    total = []
+    GC_count = {}
     index = 0
+    max_GC = 0
+
     for dna in dna_list:
         GC = 0
         tot = 0
         for c in dna:
             if c == 'C' or c == 'G':
                 GC += 1
-                tot += 1
-            else:
-                tot += 1
-        GC_count.append(GC)
-        total.append(tot)
+            tot += 1
+        GC_count[dna] = GC / tot * 100
 
-    max_GC = GC_count[0]
-    index = 0
-    for i in range(1, len(GC_count)):
-        if GC_count[i] >= max_GC:
-            max_GC = GC_count[i]
-            index = i
+    for key in GC_count:
+        if GC_count[key] > max_GC:
+            index = dna_list.index(key)
+            max_GC = GC_count[key]
 
-    return (index, round(GC_count[index] / total[index] * 100, 6))
+    return (index, max_GC)
 
 #@param rna A string representing an RNA sequence
 #returns corresponding amino acid string
