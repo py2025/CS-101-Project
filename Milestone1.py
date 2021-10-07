@@ -98,7 +98,6 @@ def GC_content(dna_list):
                 tot += 1
             else:
                 tot += 1
-
         GC_count.append(GC)
         total.append(tot)
 
