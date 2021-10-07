@@ -118,9 +118,9 @@ def rna2codon(rna):
 
     for i in range(0, int(len(rna) / 3)):
         try:
-            amino += genetic_code[(rna[3 * i:3 * i + 3])]
             if(genetic_code[(rna[3 * i: 3 * i + 3])] == '*'):
                 break
+            amino += genetic_code[(rna[3 * i:3 * i + 3])]
         except KeyError:
             continue
 
