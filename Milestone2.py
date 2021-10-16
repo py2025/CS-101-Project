@@ -32,6 +32,7 @@ def cat_strings(str_list):
 #returns concatenated strings with matching prefixes and suffixes
 def check_for_match(list1):
     test_arr = []
+    #O(n^4) Who doesn't love quadric time complexity?
     for dna in list1:
         for i in range(len(dna)):
             sub = dna[:i]
@@ -59,7 +60,6 @@ def assemble_genome(dna_list):
             try:
                 if no_dupes[i].find(s) == -1:
                     del no_dupes[i]
-                #print(second_it[i], s, second_it[i].find(s))
             except IndexError:
                 continue
     min_len = len(no_dupes[0])
