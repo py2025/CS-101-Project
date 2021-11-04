@@ -1,5 +1,42 @@
 from math import factorial
 
+#@param dna_motif A subsequence of DNA
+#@param dna A DNA sequence
+#returns the index positions of the motif characters for the first occurence of it within dna
+def find_splice(dna_motif, dna):
+    char_list = []
+    [char_list.append(c) for c in dna_motif]
+    pos_list = []
+    deleted_dna = ''
+    for char in char_list:
+        pos = dna.find(char)
+        pos_list.append(pos + len(deleted_dna)) #accounts for indices lost from deletion
+        deleted_dna += dna[:pos]
+        dna = dna[pos:]
+    return pos_list
+
+#@param dna_list A list of dna strings
+#returns a string of dna bases common to the strings
+def shared_motif(dna_list):
+    dna1 = dna_list[0]
+    common_motifs = []
+
+    for base1 in range(len(dna1)): #start with one letter in the fragment
+        for base2 in range(base1 + 1, len(dna1) + 1): #move on to next letter of fragment
+            tempstring = dna1[base1:base2] #create a variable for the motif; not final, just to search through other fragments
+            Available = True
+            for motif1 in range(1, len(dna_list)): #look through other fragments for motif
+                if tempstring not in dna_list[motif1]:
+                    Available = False
+                    break
+            if Available:
+                common_motifs.append(tempstring)
+    final_motif = ""
+    for substring in common_motifs:
+        if len(substring) > len(final_motif): #make sure the returned motif is the longest one
+            final_motif = substring
+    return final_motif
+
 #@param dna_dict A dictionary that maps DNA strings to their ROSALIND identifiers
 #returns an adjacency list
 def get_edges(dna_dict):
@@ -53,6 +90,7 @@ def check_for_match(list1):
 #returns the shortest superstring containing all given DNA strings
 def assemble_genome(dna_list):
     no_dupes = []
+    #second iteration concatenates strings again to ensure every permutation of strings is accounted for
     second_it = check_for_match(check_for_match(dna_list))
     [no_dupes.append(x) for x in second_it if x not in no_dupes]
     for i in range(len(no_dupes)):
@@ -83,4 +121,4 @@ def perfect_match(rna):
         return 0
     return factorial(char_count['A']) * factorial(char_count['C'])
 
-print(assemble_genome( [ "ATTAGACCTG", "CCTGCCGGAA", "AGACCTGCCG", "GCCGGAATAC" ]))
+print(find_splice("GTA", "ACGACATCACGTGACG"))
