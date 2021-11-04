@@ -8,34 +8,17 @@ def find_splice(dna_motif, dna):
     char_list = []
     [char_list.append(c) for c in dna_motif]
     pos_list = []
-    current_index = 0 #index of last found character in DNA
+    current_index = -1 #index of last found character in DNA
     for char in char_list:
-        if char not in dna:
-            return []
         indices = [i for i, c in enumerate(dna) if c == char] #finds all occurrences of c in dna
         for j in indices:
+            if indices[-1] < current_index:
+                return []
             if j > current_index:
                 pos_list.append(j)
                 current_index = j
                 break
     return pos_list
-
-'''
-def find_splice(dna_motif, dna):
-    char_list = []
-    [char_list.append(c) for c in dna_motif]
-    pos_list = []
-    deleted_dna = ''
-    for char in char_list:
-        if char not in dna:
-            return []
-        pos = dna[1:].find(char)
-        pos_list.append(pos + len(deleted_dna) + 1) #accounts for indices lost from deletion
-        deleted_dna += dna[:pos]
-        dna = dna[pos:]
-        print(dna)
-    return pos_list
-'''
 
 #@param dna_list A list of dna strings
 #returns a string of dna bases common to the strings
