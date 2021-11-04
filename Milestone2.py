@@ -3,16 +3,31 @@ from math import factorial
 #@param dna_motif A subsequence of DNA
 #@param dna A DNA sequence
 #returns the index positions of the motif characters for the first occurence of it within dna
+'''
+def find_splice(dna_motif, dna):
+    char_list = []
+    [char_list.append(c) for c in dna_motif]
+    ind_1 = 0 #index to start iterating through char_list
+    for char in char_list:
+        if char not in dna:
+            return []
+        pos = dna.find(char)
+        pos_list.append(pos)
+'''
+
 def find_splice(dna_motif, dna):
     char_list = []
     [char_list.append(c) for c in dna_motif]
     pos_list = []
     deleted_dna = ''
     for char in char_list:
-        pos = dna.find(char)
-        pos_list.append(pos + len(deleted_dna)) #accounts for indices lost from deletion
+        if char not in dna:
+            return []
+        pos = dna[1:].find(char)
+        pos_list.append(pos + len(deleted_dna) + 1) #accounts for indices lost from deletion
         deleted_dna += dna[:pos]
         dna = dna[pos:]
+        print(dna)
     return pos_list
 
 #@param dna_list A list of dna strings
@@ -120,5 +135,3 @@ def perfect_match(rna):
     if char_count['A'] != char_count['U'] and char_count['C'] != char_count['G']:
         return 0
     return factorial(char_count['A']) * factorial(char_count['C'])
-
-print(find_splice("GTA", "ACGACATCACGTGACG"))
