@@ -3,18 +3,23 @@ from math import factorial
 #@param dna_motif A subsequence of DNA
 #@param dna A DNA sequence
 #returns the index positions of the motif characters for the first occurence of it within dna
-'''
 def find_splice(dna_motif, dna):
     char_list = []
     [char_list.append(c) for c in dna_motif]
-    ind_1 = 0 #index to start iterating through char_list
+    pos_list = []
+    current_index = 0 #index of last found character in DNA
     for char in char_list:
         if char not in dna:
             return []
-        pos = dna.find(char)
-        pos_list.append(pos)
-'''
+        indices = [i for i, c in enumerate(dna) if c == char] #finds all occurrences of c in dna
+        for j in indices:
+            if j > current_index:
+                pos_list.append(j)
+                current_index = j
+                break
+    return pos_list
 
+'''
 def find_splice(dna_motif, dna):
     char_list = []
     [char_list.append(c) for c in dna_motif]
@@ -29,6 +34,7 @@ def find_splice(dna_motif, dna):
         dna = dna[pos:]
         print(dna)
     return pos_list
+'''
 
 #@param dna_list A list of dna strings
 #returns a string of dna bases common to the strings
