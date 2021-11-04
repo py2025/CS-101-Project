@@ -4,6 +4,7 @@ from math import factorial
 #@param dna A DNA sequence
 #returns the index positions of the motif characters for the first occurence of it within dna
 def find_splice(dna_motif, dna):
+    print(dna_motif, dna)
     char_list = []
     [char_list.append(c) for c in dna_motif]
     pos_list = []
