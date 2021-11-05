@@ -76,6 +76,9 @@ def perfect_match(rna):
 def random_genome(dna, gc_content):
     GC = 0
     n = len(dna)
+    for c in dna:
+        if c == 'G' or c == 'C':
+            GC += 1
     AT = n - GC
     dna_calc = []
 
