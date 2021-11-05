@@ -1,4 +1,4 @@
-from math import factorial, log
+from math import factorial, log10
 
 #@param dna_motif A subsequence of DNA
 #@param dna A DNA sequence
@@ -112,5 +112,5 @@ def rev_palindrome(dna):
         for j in range(4, 13):
             substring = dna[i:j]
             if reverse_complement(substring) == substring:
-                pos_len_list.append(i, j)
+                pos_len_list.append((i, j))
     return pos_len_list
