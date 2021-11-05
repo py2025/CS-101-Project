@@ -80,9 +80,29 @@ def random_genome(dna, gc_content):
     dna_calc = []
 
     for val in gc_content:
-        p = GC * math.log10(val / 2) + AT * math.log10((1 - val) / 2)
+        p = GC * log10(val / 2) + AT * log10((1 - val) / 2)
         dna_calc.append(round(p, 3))
     return dna_calc
+
+#helper method
+#@param dna A string representing a DNA sequence
+#returns the reverse complement of the DNA sequence
+def reverse_complement(dna):
+    r_dna = dna.upper()[::-1]
+    complement = ''
+    for n in r_dna:
+        if n == 'T':
+            complement += 'A'
+        elif n == 'A':
+            complement += 'T'
+        elif n == 'C':
+            complement += 'G'
+        elif n == 'G':
+            complement += 'C'
+        else:
+            complement += n
+
+    return complement
 
 #@param dna A DNA string
 #returns a list of (position, length) tuples
