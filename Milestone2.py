@@ -113,8 +113,10 @@ def rev_palindrome(dna):
     for i in range(len(dna)):
         for j in range(4, 13):
             substring = dna[i:i + j]
+            if i + j > len(dna):
+                continue
             if reverse_complement(substring) == substring:
                 pos_len_list.append((i, j))
     return pos_len_list
 
-print(rev_palindrome("ACTGCAACGGGCAATATGTCTCAA"))
+print(rev_palindrome("TCAATGCATGCGGGTCTATATGCAT"))
