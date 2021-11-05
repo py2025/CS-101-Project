@@ -1,4 +1,4 @@
-from math import factorial
+from math import factorial, log
 
 #@param dna_motif A subsequence of DNA
 #@param dna A DNA sequence
@@ -57,10 +57,12 @@ def get_edges(dna_dict):
                 adj_list.append((key, key1))
     return adj_list
 
+'''
 #helper method
 #@param str_list A list of strings to concatenate with the substring they share
 #returns the concatenated strings
 def cat_strings(str_list):
+
     new_str_2 = ''
     if str_list[0].find(str_list[2]) == 0:
         new_str_2 += str_list[0].replace(str_list[2], '')
@@ -86,6 +88,7 @@ def check_for_match(list1):
                         test_arr.append((dna, dna1, dna1[-1:j:-1][::-1]))
                         largest_common = len(dna1[-1:j:-1][::-1])
     list_of_cats = []
+    print(list_of_cats)
     for l in test_arr:
         list_of_cats.append(cat_strings(l))
     return list_of_cats
@@ -104,13 +107,18 @@ def assemble_genome(dna_list):
                     del no_dupes[i]
             except IndexError:
                 continue
-    min_len = len(no_dupes[0])
-    index = 0
-    for i in range(len(no_dupes)):
-        if len(no_dupes[i]) < min_len:
-            index = i
-            min_len = len(no_dupes[i])
-    return no_dupes[index]
+    if len(no_dupes) != 0:
+        min_len = len(no_dupes[0])
+        index = 0
+        for i in range(len(no_dupes)):
+            if len(no_dupes[i]) < min_len:
+                index = i
+                min_len = len(no_dupes[i])
+        return no_dupes[index]
+    else:
+        return second_it
+print(assemble_genome(['A', 'T', 'C', 'G', 'G']))
+'''
 
 #@param rna An RNA string
 #returns the total possible number of perfect matchings of nucleotide bases
@@ -124,3 +132,30 @@ def perfect_match(rna):
     if char_count['A'] != char_count['U'] and char_count['C'] != char_count['G']:
         return 0
     return factorial(char_count['A']) * factorial(char_count['C'])
+
+def random_genome(dna, gc_content):
+    dna = dna.upper # upper case inputs
+    count_cg = len(dna.replace('A','').replace('T','')) #count the CG in the dna string
+    count_at = len(dna.replace('C','').replace('G',''))  #count the AT in the dna string
+    dna_calc = [] #to stre the result of the coming calculation
+
+    for dnaString in range (0, len(gc_content)):
+        cgFreq = (float(gc_content[dnaString])) / 2 #frequency of CG
+        atFreq = (1 - float(gc_content[dnaString])) / 2 #frequency of AT
+
+        probFxn = (count_cg * log10(cgFreq)) + (count_at * log10(atFreq)) # probability fuction calculation
+        dna_calc.append(round(probFxn, 3))
+    return dna_calc
+
+def rev_palindrome(dna):
+    dnaString=[] #array to store data
+
+    #finding the length of the string to fit the given parameters
+    for letter in range(0, len(dna) - 4): #finding string length between 4-12
+        for element in range (letter + 3, min(len(dna), i + 12)):
+            string = dna[letter:element + 1]
+            #checking if the dna string matches the palindrome or not
+            if reverse_complement(dna[letter:element + 1]) == string:
+                dnaString.append((letter, element + 1)) #save data to array
+
+    return dnaString
