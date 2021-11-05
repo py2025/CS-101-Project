@@ -57,69 +57,6 @@ def get_edges(dna_dict):
                 adj_list.append((key, key1))
     return adj_list
 
-'''
-#helper method
-#@param str_list A list of strings to concatenate with the substring they share
-#returns the concatenated strings
-def cat_strings(str_list):
-
-    new_str_2 = ''
-    if str_list[0].find(str_list[2]) == 0:
-        new_str_2 += str_list[0].replace(str_list[2], '')
-        return str_list[1] + new_str_2
-    new_str_2 += str_list[1].replace(str_list[2], '')
-    return str_list[0] + new_str_2
-
-#helper method
-#@param list1 a list of strings to check for matches with prefixes and suffixes
-#returns concatenated strings with matching prefixes and suffixes
-def check_for_match(list1):
-    test_arr = []
-    #O(n^4) Who doesn't love quadric time complexity?
-    for dna in list1:
-        for i in range(len(dna)):
-            sub = dna[:i]
-            for dna1 in list1:
-                largest_common = 0
-                for j in range(-2, -len(dna1) - 2, -1):
-                    if dna1 == dna:
-                        continue
-                    if dna1[-1:j:-1][::-1] == sub and len(dna1[-1:j:-1][::-1]) > largest_common:
-                        test_arr.append((dna, dna1, dna1[-1:j:-1][::-1]))
-                        largest_common = len(dna1[-1:j:-1][::-1])
-    list_of_cats = []
-    print(list_of_cats)
-    for l in test_arr:
-        list_of_cats.append(cat_strings(l))
-    return list_of_cats
-
-#@param dna_list A list of DNA strings
-#returns the shortest superstring containing all given DNA strings
-def assemble_genome(dna_list):
-    no_dupes = []
-    #second iteration concatenates strings again to ensure every permutation of strings is accounted for
-    second_it = check_for_match(check_for_match(dna_list))
-    [no_dupes.append(x) for x in second_it if x not in no_dupes]
-    for i in range(len(no_dupes)):
-        for s in dna_list:
-            try:
-                if no_dupes[i].find(s) == -1:
-                    del no_dupes[i]
-            except IndexError:
-                continue
-    if len(no_dupes) != 0:
-        min_len = len(no_dupes[0])
-        index = 0
-        for i in range(len(no_dupes)):
-            if len(no_dupes[i]) < min_len:
-                index = i
-                min_len = len(no_dupes[i])
-        return no_dupes[index]
-    else:
-        return second_it
-print(assemble_genome(['A', 'T', 'C', 'G', 'G']))
-'''
-
 #@param rna An RNA string
 #returns the total possible number of perfect matchings of nucleotide bases
 def perfect_match(rna):
@@ -133,29 +70,27 @@ def perfect_match(rna):
         return 0
     return factorial(char_count['A']) * factorial(char_count['C'])
 
+#@param dna A DNA string
+#@param gc_content An array of GC-content values
+#returns the common logarithm of probability that a random string will match dna
 def random_genome(dna, gc_content):
-    dna = dna.upper # upper case inputs
-    count_cg = len(dna.replace('A','').replace('T','')) #count the CG in the dna string
-    count_at = len(dna.replace('C','').replace('G',''))  #count the AT in the dna string
-    dna_calc = [] #to stre the result of the coming calculation
+    GC = 0
+    n = len(dna)
+    AT = n - GC
+    dna_calc = []
 
-    for dnaString in range (0, len(gc_content)):
-        cgFreq = (float(gc_content[dnaString])) / 2 #frequency of CG
-        atFreq = (1 - float(gc_content[dnaString])) / 2 #frequency of AT
-
-        probFxn = (count_cg * log10(cgFreq)) + (count_at * log10(atFreq)) # probability fuction calculation
-        dna_calc.append(round(probFxn, 3))
+    for val in gc_content:
+        p = GC * math.log10(val / 2) + AT * math.log10((1 - val) / 2)
+        dna_calc.append(round(p, 3))
     return dna_calc
 
+#@param dna A DNA string
+#returns a list of (position, length) tuples
 def rev_palindrome(dna):
-    dnaString=[] #array to store data
-
-    #finding the length of the string to fit the given parameters
-    for letter in range(0, len(dna) - 4): #finding string length between 4-12
-        for element in range (letter + 3, min(len(dna), i + 12)):
-            string = dna[letter:element + 1]
-            #checking if the dna string matches the palindrome or not
-            if reverse_complement(dna[letter:element + 1]) == string:
-                dnaString.append((letter, element + 1)) #save data to array
-
-    return dnaString
+    pos_len_list = []
+    for i in range(len(dna)):
+        for j in range(4, 13):
+            substring = dna[i:j]
+            if reverse_complement(substring) == substring:
+                pos_len_list.append(i, j)
+    return pos_len_list
