@@ -75,11 +75,10 @@ def perfect_match(rna):
 #returns the common logarithm of probability that a random string will match dna
 def random_genome(dna, gc_content):
     GC = 0
-    n = len(dna)
     for c in dna:
         if c == 'G' or c == 'C':
             GC += 1
-    AT = n - GC
+    AT = len(dna) - GC
     dna_calc = []
 
     for val in gc_content:
