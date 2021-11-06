@@ -57,6 +57,59 @@ def get_edges(dna_dict):
                 adj_list.append((key, key1))
     return adj_list
 
+#helper method
+#@param s1 A string
+#@param s2 A string
+#@param out_str A string to store resulting string after overlap
+#returns maximum overlap of s1 and s2 and the resulting string
+def find_overlaps(s1, s2, out_str):
+    max_overlap = 0
+    n = min([len(s1), len(s2)])
+
+    for i in range(1, n + 1):
+        if s1[-i:] == s2[:i]:
+            if max_overlap < i:
+                max_overlap = i
+                out_str = s1 + s2[i:]
+
+    for i in range(1, n + 1):
+        if s2[-i:] == s1[:i]:
+            if max_overlap < i:
+                max_overlap = i
+                out_str = s2 + s1[i:]
+    return (max_overlap, out_str)
+
+#@param dna_list A list of dna
+#returns the shortest superstring of dna in dna_list
+def assemble_genome(dna_list):
+    n = len(dna_list)
+
+    while n != 1:
+        max_overlap = 0
+        p = -1 #p and q are indices involved in max overlap
+        q = -1
+        res_str = ''
+        temp_str = '' #keeps track of resulting string after overlap
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                overlap, temp_str = find_overlaps(dna_list[i], dna_list[j], temp_str)
+
+                if max_overlap < overlap:
+                    max_overlap = overlap
+                    res_str = temp_str
+                    p = i
+                    q = j
+        n -= 1
+
+        if max_overlap == 0:
+            dna_list[0] += dna_list[n]
+        else:
+            dna_list[p] = res_str
+            dna_list[q] = dna_list[n]
+
+    return dna_list[0]
+    
 #@param rna An RNA string
 #returns the total possible number of perfect matchings of nucleotide bases
 def perfect_match(rna):
@@ -118,5 +171,3 @@ def rev_palindrome(dna):
             if reverse_complement(substring) == substring:
                 pos_len_list.append((i, j))
     return pos_len_list
-
-print(rev_palindrome("TCAATGCATGCGGGTCTATATGCAT"))
