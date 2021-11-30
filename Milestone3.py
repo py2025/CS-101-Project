@@ -359,7 +359,7 @@ def load_file(file_name):
 #@param dna_list A list of dna with 8 characters of overlap between strings
 #returns the shortest superstring of dna in dna_list with 8 character overlap
 def assemble_genome2(dna_list):
-    temp_dict2 = {}
+    overlaps = {}
     superstring = ''
     for dna in dna_list:
         matching_pre = False #flag for if matching prefix is found for each string
@@ -369,11 +369,11 @@ def assemble_genome2(dna_list):
             else: #checks for suffix and prefix match of 8 characters via brute force
                 if comp_dna[-1:-9:-1][::-1] == dna[:8]:
                     matching_pre = True
-                    temp_dict2[comp_dna] = dna
+                    overlaps[comp_dna] = dna
         if matching_pre == False:
             superstring = dna
             prev_key = dna
-    for i in range(len(temp_dict2)): #iterate through dictionary with every value becoming the next key
-        superstring += temp_dict2[prev_key][8:]
-        prev_key = temp_dict2[prev_key]
+    for i in range(len(overlaps)): #iterate through dictionary with every value becoming the next key
+        superstring += overlaps[prev_key][8:]
+        prev_key = overlaps[prev_key]
     return superstring
